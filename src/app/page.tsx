@@ -16,19 +16,6 @@ export default function Home() {
           alt="Alt text"
         />
       </div>
-      <div>
-        <h2>File upload</h2>
-        <IKUpload
-          fileName="test-upload.png"
-          onError={(err) => {
-            console.log("Error", err);
-          }}
-          onSuccess={(res) => {
-            console.log("On Success", res);
-            setFilePath(res.filePath);
-          }}
-        />
-      </div>
     </>
   );
 }

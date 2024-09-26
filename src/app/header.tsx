@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ModeToggle } from "@/components/ui/toggle-theme";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -12,6 +13,7 @@ import {
 import { CircleUser, Menu, Package2, Search } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import SearchInput from "./search-input";
 
 const Header = () => {
   return (
@@ -67,12 +69,7 @@ const Header = () => {
         >
           <div className="relative">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              name="search"
-              type="search"
-              placeholder="Search Memes"
-              className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-            />
+            <SearchInput />
           </div>
         </form>
         <DropdownMenu>
@@ -91,6 +88,7 @@ const Header = () => {
             <DropdownMenuItem>Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <ModeToggle />
       </div>
     </header>
   );
