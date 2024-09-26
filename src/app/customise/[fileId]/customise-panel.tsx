@@ -23,14 +23,6 @@ const CustomisePanel = ({
   ]);
 
   const transformations = [];
-  const handleOverlayChange = (id: number, text: string) => {
-    const foundIdx = textOverlays.findIndex((overlay) => overlay.id === id);
-    if (foundIdx === -1) return;
-    textOverlays[foundIdx].transformation = text;
-
-    setTextOverlays([...textOverlays]);
-  };
-
   if (textOverlays) {
     transformations.push({
       raw: textOverlays
@@ -39,6 +31,20 @@ const CustomisePanel = ({
         .join(":"),
     });
   }
+  const handleOverlayChange = (id: number, text: string) => {
+    const foundIdx = textOverlays.findIndex((overlay) => overlay.id === id);
+    if (foundIdx === -1) return;
+    textOverlays[foundIdx].transformation = text;
+
+    setTextOverlays([...textOverlays]);
+  };
+
+  const handleRemoveOverlay = (idToRemove: number) => {
+    setTextOverlays(
+      textOverlays.filter((overlay) => overlay.id !== idToRemove)
+    );
+  };
+
   return (
     <div className="grid grid-cols-2 gap-8">
       <form className="space-y-4">
@@ -60,6 +66,7 @@ const CustomisePanel = ({
             <TextOverlay
               key={overlay.id}
               overlay={overlay}
+              handleRemoveOverlay={handleRemoveOverlay}
               handleOverlayChange={handleOverlayChange}
             />
           );

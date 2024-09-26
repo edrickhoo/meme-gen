@@ -6,13 +6,16 @@ import { Slider } from "@/components/ui/slider";
 import { FileObject } from "imagekit/dist/libs/interfaces";
 import { IKImage } from "imagekitio-next";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const TextOverlay = ({
   overlay,
   handleOverlayChange,
+  handleRemoveOverlay,
 }: {
   overlay: { id: number; transformation: string };
   handleOverlayChange: (id: number, text: string) => void;
+  handleRemoveOverlay: (idToRemove: number) => void;
 }) => {
   const [textOverlay, setTextOverlay] = useState("");
   const [xPos, setXPos] = useState(50);
@@ -35,7 +38,15 @@ const TextOverlay = ({
   return (
     <Card className="p-4 space-y-2">
       <div className="space-y-3">
-        <Label htmlFor="textOverlay">Text Overlay</Label>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="textOverlay">Text Overlay</Label>
+          <Button
+            onClick={() => handleRemoveOverlay(overlay.id)}
+            variant="destructive"
+          >
+            Remove
+          </Button>
+        </div>
         <Input
           id="textOverlay"
           name="textOverlay"
