@@ -34,7 +34,6 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
       enableSystem
       disableTransitionOnChange
     >
-      {" "}
       <ImageKitProvider
         publicKey={publicKey}
         urlEndpoint={urlEndpoint}
