@@ -1,14 +1,10 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import { FileObject } from "imagekit/dist/libs/interfaces";
 import { IKImage } from "imagekitio-next";
 import React, { useState } from "react";
 import TextOverlay from "./text-overlay";
 import { Button } from "@/components/ui/button";
-import { text } from "stream/consumers";
 
 const CustomisePanel = ({
   file,

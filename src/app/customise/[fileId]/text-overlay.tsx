@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { FileObject } from "imagekit/dist/libs/interfaces";
-import { IKImage } from "imagekitio-next";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DebouncedPicker } from "@/components/ui/debounce-color-picker";
 
 const TextOverlay = ({
   overlay,
@@ -20,42 +20,82 @@ const TextOverlay = ({
   const [textOverlay, setTextOverlay] = useState("");
   const [xPos, setXPos] = useState(50);
   const [yPos, setYPos] = useState(50);
+  const [useBgTextColor, setUseBgTextColor] = useState(false);
+  const [textBgColor, setTextBgColor] = useState("#aabbcc");
 
-  const onUpdate = (text: string, x: number, y: number) => {
+  const onUpdate = (
+    text: string,
+    x: number,
+    y: number,
+    textBgColor: string,
+    useBgTextColor: boolean
+  ) => {
     if (!text) {
       return handleOverlayChange(overlay.id, "");
     }
-
     const xDecimal = x / 100;
     const yDecimal = y / 100;
-    const transformText = `l-text,i-${text},fs-50,lx-bw_mul_${xDecimal.toFixed(
+    const transformText = `l-text,i-${text},pa-10,fs-80,lx-bw_mul_${xDecimal.toFixed(
       1
-    )},ly-bw_mul_${yDecimal.toFixed(1)},l-end`;
+    )},ly-bw_mul_${yDecimal.toFixed(1)},${
+      useBgTextColor ? `bg-${textBgColor.slice(1)},` : ""
+    }l-end`;
 
     handleOverlayChange(overlay.id, transformText);
   };
 
   return (
     <Card className="p-4 space-y-2">
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
+      <div className="flex items-center justify-end">
+        <Button
+          onClick={() => handleRemoveOverlay(overlay.id)}
+          variant="destructive"
+        >
+          Remove
+        </Button>
+      </div>
+      <div className="flex items-start justify-between gap-4">
+        <div className="space-y-3 flex-1">
           <Label htmlFor="textOverlay">Text Overlay</Label>
-          <Button
-            onClick={() => handleRemoveOverlay(overlay.id)}
-            variant="destructive"
-          >
-            Remove
-          </Button>
+          <Input
+            id="textOverlay"
+            name="textOverlay"
+            value={textOverlay}
+            onChange={(e) => {
+              setTextOverlay(e.target.value);
+              onUpdate(e.target.value, xPos, yPos, textBgColor, useBgTextColor);
+            }}
+          />
         </div>
-        <Input
-          id="textOverlay"
-          name="textOverlay"
-          value={textOverlay}
-          onChange={(e) => {
-            setTextOverlay(e.target.value);
-            onUpdate(e.target.value, xPos, yPos);
-          }}
-        />
+        <div className="space-y-2">
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              checked={useBgTextColor}
+              onCheckedChange={(e) => {
+                setUseBgTextColor(e as boolean);
+                onUpdate(textOverlay, xPos, yPos, textBgColor, e as boolean);
+              }}
+              id="textBgColor"
+            />
+            <Label
+              htmlFor="textBgColor"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Text background color
+            </Label>
+          </div>
+          {useBgTextColor && (
+            <div className="small">
+              <DebouncedPicker
+                color={textBgColor}
+                onChange={(e) => {
+                  setTextBgColor(e);
+                  onUpdate(textOverlay, xPos, yPos, e, useBgTextColor);
+                }}
+              />
+            </div>
+          )}
+        </div>
       </div>
       <div>
         <Label htmlFor="xPos">X Position</Label>
@@ -69,7 +109,7 @@ const TextOverlay = ({
             step={1}
             onValueChange={([v]) => {
               setXPos(v);
-              onUpdate(textOverlay, v, yPos);
+              onUpdate(textOverlay, v, yPos, textBgColor, useBgTextColor);
             }}
           />
           <span>{xPos}</span>
@@ -86,7 +126,7 @@ const TextOverlay = ({
             step={1}
             onValueChange={([v]) => {
               setYPos(v);
-              onUpdate(textOverlay, xPos, v);
+              onUpdate(textOverlay, xPos, v, textBgColor, useBgTextColor);
             }}
           />
           <span>{yPos}</span>

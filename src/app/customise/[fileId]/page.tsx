@@ -1,9 +1,5 @@
 import { unstable_noStore } from "next/cache";
-
-import ResultsList from "@/app/search/results-list";
-import UploadMemeButton from "@/app/search/upload-meme-button";
 import { imagekit } from "@/lib/image-kit";
-import { IKImage } from "imagekitio-next";
 import CustomisePanel from "./customise-panel";
 
 const CustomisePage = async ({ params }: { params: { fileId: string } }) => {

@@ -76,3 +76,11 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.small .react-colorful {
+  width: 120px;
+  height: 120px;
+}
+.small .react-colorful__hue {
+  height: 20px;
+}
