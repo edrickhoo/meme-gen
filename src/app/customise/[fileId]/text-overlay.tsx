@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
@@ -10,40 +10,44 @@ import { DebouncedPicker } from "@/components/ui/debounce-color-picker";
 
 const TextOverlay = ({
   overlay,
-  handleOverlayChange,
+  onOverlayUpdate,
   handleRemoveOverlay,
 }: {
   overlay: { id: number; transformation: string };
-  handleOverlayChange: (id: number, text: string) => void;
-  handleRemoveOverlay: (idToRemove: number) => void;
-}) => {
-  const [textOverlay, setTextOverlay] = useState("");
-  const [xPos, setXPos] = useState(50);
-  const [yPos, setYPos] = useState(50);
-  const [useBgTextColor, setUseBgTextColor] = useState(false);
-  const [textBgColor, setTextBgColor] = useState("#aabbcc");
-
-  const onUpdate = (
+  onOverlayUpdate: (
+    id: number,
     text: string,
     x: number,
     y: number,
     textBgColor: string,
     useBgTextColor: boolean
-  ) => {
-    if (!text) {
-      return handleOverlayChange(overlay.id, "");
-    }
-    const xDecimal = x / 100;
-    const yDecimal = y / 100;
-    const transformText = `l-text,i-${text},pa-10,fs-80,lx-bw_mul_${xDecimal.toFixed(
-      1
-    )},ly-bw_mul_${yDecimal.toFixed(1)},${
-      useBgTextColor ? `bg-${textBgColor.slice(1)},` : ""
-    }l-end`;
+  ) => void;
+  handleRemoveOverlay: (idToRemove: number) => void;
+}) => {
+  const [textOverlay, setTextOverlay] = useState("Hello");
+  const [xPos, setXPos] = useState(50);
+  const [yPos, setYPos] = useState(50);
+  const [useBgTextColor, setUseBgTextColor] = useState(false);
+  const [textBgColor, setTextBgColor] = useState("#aabbcc");
 
-    handleOverlayChange(overlay.id, transformText);
-  };
-
+  useEffect(() => {
+    onOverlayUpdate(
+      overlay.id,
+      textOverlay,
+      xPos,
+      yPos,
+      textBgColor,
+      useBgTextColor
+    );
+  }, [
+    onOverlayUpdate,
+    overlay.id,
+    textBgColor,
+    textOverlay,
+    useBgTextColor,
+    xPos,
+    yPos,
+  ]);
   return (
     <Card className="p-4 space-y-2">
       <div className="flex items-center justify-end">
@@ -63,7 +67,6 @@ const TextOverlay = ({
             value={textOverlay}
             onChange={(e) => {
               setTextOverlay(e.target.value);
-              onUpdate(e.target.value, xPos, yPos, textBgColor, useBgTextColor);
             }}
           />
         </div>
@@ -73,7 +76,14 @@ const TextOverlay = ({
               checked={useBgTextColor}
               onCheckedChange={(e) => {
                 setUseBgTextColor(e as boolean);
-                onUpdate(textOverlay, xPos, yPos, textBgColor, e as boolean);
+                onOverlayUpdate(
+                  overlay.id,
+                  textOverlay,
+                  xPos,
+                  yPos,
+                  textBgColor,
+                  e as boolean
+                );
               }}
               id="textBgColor"
             />
@@ -90,7 +100,6 @@ const TextOverlay = ({
                 color={textBgColor}
                 onChange={(e) => {
                   setTextBgColor(e);
-                  onUpdate(textOverlay, xPos, yPos, e, useBgTextColor);
                 }}
               />
             </div>
@@ -109,7 +118,6 @@ const TextOverlay = ({
             step={1}
             onValueChange={([v]) => {
               setXPos(v);
-              onUpdate(textOverlay, v, yPos, textBgColor, useBgTextColor);
             }}
           />
           <span>{xPos}</span>
@@ -126,7 +134,6 @@ const TextOverlay = ({
             step={1}
             onValueChange={([v]) => {
               setYPos(v);
-              onUpdate(textOverlay, xPos, v, textBgColor, useBgTextColor);
             }}
           />
           <span>{yPos}</span>

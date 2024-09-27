@@ -2,9 +2,10 @@
 
 import { FileObject } from "imagekit/dist/libs/interfaces";
 import { IKImage } from "imagekitio-next";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import TextOverlay from "./text-overlay";
 import { Button } from "@/components/ui/button";
+import { useDebouncedCallback } from "use-debounce";
 
 const CustomisePanel = ({
   file,
@@ -27,13 +28,42 @@ const CustomisePanel = ({
         .join(":"),
     });
   }
-  const handleOverlayChange = (id: number, text: string) => {
-    const foundIdx = textOverlays.findIndex((overlay) => overlay.id === id);
-    if (foundIdx === -1) return;
-    textOverlays[foundIdx].transformation = text;
+  const handleOverlayChange = useCallback((id: number, text: string) => {
+    setTextOverlays((textOverlays) => {
+      const foundIdx = textOverlays.findIndex((overlay) => overlay.id === id);
+      if (foundIdx === -1) return [];
+      textOverlays[foundIdx].transformation = text;
+      return [...textOverlays];
+    });
+  }, []);
 
-    setTextOverlays([...textOverlays]);
-  };
+  const onOverlayUpdate = useCallback(
+    useDebouncedCallback(
+      (
+        id: number,
+        text: string,
+        x: number,
+        y: number,
+        textBgColor: string,
+        useBgTextColor: boolean
+      ) => {
+        if (!text) {
+          return handleOverlayChange(id, "");
+        }
+        const xDecimal = x / 100;
+        const yDecimal = y / 100;
+        const transformText = `l-text,i-${text},pa-10,fs-50,lx-bw_mul_${xDecimal.toFixed(
+          1
+        )},ly-bw_mul_${yDecimal.toFixed(1)},${
+          useBgTextColor ? `bg-${textBgColor.slice(1)},` : ""
+        }l-end`;
+
+        handleOverlayChange(id, transformText);
+      },
+      250
+    ),
+    [handleOverlayChange]
+  );
 
   const handleRemoveOverlay = (idToRemove: number) => {
     setTextOverlays(
@@ -63,7 +93,7 @@ const CustomisePanel = ({
               key={overlay.id}
               overlay={overlay}
               handleRemoveOverlay={handleRemoveOverlay}
-              handleOverlayChange={handleOverlayChange}
+              onOverlayUpdate={onOverlayUpdate}
             />
           );
         })}
