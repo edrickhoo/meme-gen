@@ -6,7 +6,13 @@ import { assertAuthenicated } from "@/lib/auth-utils";
 import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export const toggleFavouriteMemeAction = async (imgId: string) => {
+export const toggleFavouriteMemeAction = async (
+  imgId: string,
+  filePath: string,
+  pathToRevalidate: string,
+  fileHeight: number,
+  fileWidth: number
+) => {
   const userId = await assertAuthenicated();
 
   const existingFavourite = await db.query.favourites.findFirst({
@@ -21,8 +27,11 @@ export const toggleFavouriteMemeAction = async (imgId: string) => {
     await db.insert(favourites).values({
       userId,
       memeId: imgId,
+      filePath: filePath,
+      fileWidth,
+      fileHeight,
     });
   }
 
-  revalidatePath(`/customise/${imgId}`);
+  revalidatePath(pathToRevalidate);
 };

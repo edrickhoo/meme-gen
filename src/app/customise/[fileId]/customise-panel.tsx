@@ -16,15 +16,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { toggleFavouriteMemeAction } from "./actions";
-import { HeartFilledIcon } from "@radix-ui/react-icons";
+import FavouriteButton from "./favourite-button";
 
 const CustomisePanel = ({
   file,
   isFavourited,
+  isAuthenicated,
 }: {
-  file: Pick<FileObject, "filePath" | "name" | "fileId">;
+  // file: Pick<FileObject, "filePath" | "name" | "fileId">;
+  file: FileObject;
   isFavourited: boolean;
+  isAuthenicated: boolean;
 }) => {
   const [textOverlays, setTextOverlays] = useState([
     {
@@ -212,46 +214,28 @@ const CustomisePanel = ({
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <form
-                  action={async () => {
-                    toggleFavouriteMemeAction(file.fileId);
-                  }}
-                >
-                  <Button
-                    type="submit"
-                    onClick={async () => {}}
-                    className="w-fit self-end"
-                  >
-                    {isFavourited ? (
-                      <HeartFilledIcon
-                        className={`${isFavourited ? "text-red-500" : ""}`}
-                        height={24}
-                        width={24}
-                      />
-                    ) : (
-                      <Heart />
-                    )}
-                  </Button>
-                </form>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{isFavourited ? "Unfavourite" : "Favourite"}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          {isAuthenicated && (
+            <FavouriteButton
+              fileId={file.fileId}
+              isFavourited={isFavourited}
+              filePath={file.filePath}
+              fileWidth={file.width}
+              fileHeight={file.height}
+            />
+          )}
         </div>
 
-        <div className="meme">
+        <div
+          // className={`meme aspect-[${file.width}/${file.height}] relative object-cover h-full`}
+          className={`meme relative object-cover h-full`}
+        >
           <IKImage
-            className="pt-5"
+            className="pt-5 object-cover"
             path={file.filePath}
-            transformation={transformations}
+            transformation={[...transformations]}
             alt={file.name}
-            width={300}
-            height={300}
+            width={file.width}
+            height={file.height}
           />
         </div>
       </div>
