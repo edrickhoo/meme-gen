@@ -48,6 +48,7 @@ const TextOverlay = ({
     xPos,
     yPos,
   ]);
+
   return (
     <Card className="p-4 space-y-2">
       <div className="flex items-center justify-end">
@@ -108,7 +109,6 @@ const TextOverlay = ({
       </div>
       <div>
         <Label htmlFor="xPos">X Position</Label>
-
         <div className="flex gap-2">
           <Slider
             id="xPos"
