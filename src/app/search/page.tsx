@@ -15,7 +15,6 @@ const SearchPage = async ({
     // searchQuery: `name:${searchParams.q}`,
     tags: `${searchParams.q}`,
   });
-  console.log({ files });
 
   return (
     <div className="container mx-auto space-y-8 py-8 px-4">

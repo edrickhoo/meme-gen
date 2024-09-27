@@ -9,18 +9,22 @@ import { useDebouncedCallback } from "use-debounce";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { Download } from "lucide-react";
+import { Download, Heart } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { toggleFavouriteMemeAction } from "./actions";
+import { HeartFilledIcon } from "@radix-ui/react-icons";
 
 const CustomisePanel = ({
   file,
+  isFavourited,
 }: {
-  file: Pick<FileObject, "filePath" | "name">;
+  file: Pick<FileObject, "filePath" | "name" | "fileId">;
+  isFavourited: boolean;
 }) => {
   const [textOverlays, setTextOverlays] = useState([
     {
@@ -85,7 +89,6 @@ const CustomisePanel = ({
         const transformText = `l-text,i-${text},pa-10,fs-50,lx-bw_mul_${xDecimal.toFixed(
           1
         )},ly-bw_mul_${yDecimal.toFixed(1)},${conditionalTransformations}l-end`;
-        console.log(transformText);
         handleOverlayChange(id, transformText);
       },
       250
@@ -179,36 +182,68 @@ const CustomisePanel = ({
         })}
       </form>
       <div className="flex flex-col gap-4">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                onClick={async () => {
-                  const image: HTMLImageElement | null =
-                    document.querySelector(".meme > img");
-                  const src = image?.getAttribute("src");
-                  if (!src) {
-                    return;
-                  }
-                  const res = await fetch(src);
-                  const blob = await res.blob();
-                  const url = window.URL.createObjectURL(blob);
-                  console.log(blob);
-                  const a = document.createElement("a");
-                  a.href = url;
-                  a.download = image?.alt || "";
-                  a.click();
-                }}
-                className="w-fit self-end"
-              >
-                <Download />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Download Image</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <div className="flex gap-4 justify-end">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={async () => {
+                    const image: HTMLImageElement | null =
+                      document.querySelector(".meme > img");
+                    const src = image?.getAttribute("src");
+                    if (!src) {
+                      return;
+                    }
+                    const res = await fetch(src);
+                    const blob = await res.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = image?.alt || "";
+                    a.click();
+                  }}
+                  className="w-fit self-end"
+                >
+                  <Download />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Download Image</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <form
+                  action={async () => {
+                    toggleFavouriteMemeAction(file.fileId);
+                  }}
+                >
+                  <Button
+                    type="submit"
+                    onClick={async () => {}}
+                    className="w-fit self-end"
+                  >
+                    {isFavourited ? (
+                      <HeartFilledIcon
+                        className={`${isFavourited ? "text-red-500" : ""}`}
+                        height={24}
+                        width={24}
+                      />
+                    ) : (
+                      <Heart />
+                    )}
+                  </Button>
+                </form>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{isFavourited ? "Unfavourite" : "Favourite"}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+
         <div className="meme">
           <IKImage
             className="pt-5"
