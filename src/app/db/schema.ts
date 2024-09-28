@@ -98,4 +98,14 @@ export const favourites = pgTable("favourites", {
   fileHeight: integer("fileHeight").notNull(),
 });
 
+export const favouriteCounts = pgTable("favouriteCounts", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  // favouritesId: text("favouritesId"
+  // ).notNull().references(() => favourites.id, {onDelete: "cascade"}),
+  memeId: text("memeId").notNull(),
+  favCount: integer("favCount").notNull().default(0),
+});
+
 export type Favourite = typeof favourites.$inferSelect;

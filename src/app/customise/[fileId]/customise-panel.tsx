@@ -68,7 +68,7 @@ const CustomisePanel = ({
       return [...textOverlays];
     });
   }, []);
-
+  // todo add font size change
   const onOverlayUpdate = useCallback(
     useDebouncedCallback(
       (
@@ -77,7 +77,8 @@ const CustomisePanel = ({
         x: number,
         y: number,
         textBgColor: string,
-        useBgTextColor: boolean
+        useBgTextColor: boolean,
+        fontSize
       ) => {
         if (!text) {
           return handleOverlayChange(id, "");

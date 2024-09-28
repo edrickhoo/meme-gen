@@ -1,5 +1,4 @@
 "use client";
-import { FileObject } from "imagekit/dist/libs/interfaces";
 import { IKImage } from "imagekitio-next";
 import React from "react";
 import {
@@ -11,8 +10,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { HeartFilledIcon } from "@radix-ui/react-icons";
+import { FileWithFav } from "./page";
 
-const ResultsList = ({ files }: { files: FileObject[] }) => {
+const ResultsList = ({ files }: { files: FileWithFav[] }) => {
   return (
     <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
       {files
@@ -22,7 +23,13 @@ const ResultsList = ({ files }: { files: FileObject[] }) => {
             <Card className="">
               <CardHeader>
                 <CardTitle>
-                  {file.customMetadata?.displayName || file.name}
+                  <div className="flex justify-between items-center">
+                    <div>{file.customMetadata?.displayName || file.name}</div>
+                    <div className="flex items-center justify-center gap-1">
+                      <HeartFilledIcon className="h-4 w-4" />
+                      <div>{file.favCount || 0}</div>
+                    </div>
+                  </div>
                 </CardTitle>
               </CardHeader>
               <CardContent className="flex items-center justify-center object-cover">

@@ -2,6 +2,12 @@ import { unstable_noStore } from "next/cache";
 import ResultsList from "./results-list";
 import UploadMemeButton from "./upload-meme-button";
 import { imagekit } from "@/lib/image-kit";
+import { getFavCountFromIdsAction } from "../customise/[fileId]/actions";
+import { FileObject } from "imagekit/dist/libs/interfaces";
+
+export type FileWithFav = FileObject & {
+  favCount?: number;
+};
 
 const SearchPage = async ({
   searchParams,
@@ -14,6 +20,18 @@ const SearchPage = async ({
   const files = await imagekit.listFiles({
     // searchQuery: `name:${searchParams.q}`,
     tags: `${searchParams.q}`,
+  });
+
+  const favCounts = await getFavCountFromIdsAction(
+    files.map((file) => file.fileId)
+  );
+
+  files.map((file: FileWithFav) => {
+    const foundFav = favCounts.find((fav) => fav.memeId === file.fileId);
+    if (foundFav) {
+      file.favCount = foundFav.favCount;
+    }
+    return file;
   });
 
   return (
