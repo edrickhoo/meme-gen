@@ -4,6 +4,7 @@ import UploadMemeButton from "./upload-meme-button";
 import { imagekit } from "@/lib/image-kit";
 import { getFavCountFromIdsAction } from "../customise/[fileId]/actions";
 import { FileObject } from "imagekit/dist/libs/interfaces";
+import NoResults from "./no-results";
 
 export type FileWithFav = FileObject & {
   favCount?: number;
@@ -21,18 +22,21 @@ const SearchPage = async ({
     // searchQuery: `name:${searchParams.q}`,
     tags: `${searchParams.q}`,
   });
+  console.log({ files });
 
-  const favCounts = await getFavCountFromIdsAction(
-    files.map((file) => file.fileId)
-  );
+  if (files.length > 0) {
+    const favCounts = await getFavCountFromIdsAction(
+      files.map((file) => file.fileId)
+    );
 
-  files.map((file: FileWithFav) => {
-    const foundFav = favCounts.find((fav) => fav.memeId === file.fileId);
-    if (foundFav) {
-      file.favCount = foundFav.favCount;
-    }
-    return file;
-  });
+    files.map((file: FileWithFav) => {
+      const foundFav = favCounts.find((fav) => fav.memeId === file.fileId);
+      if (foundFav) {
+        file.favCount = foundFav.favCount;
+      }
+      return file;
+    });
+  }
 
   return (
     <div className="container mx-auto space-y-8 py-8 px-4">
@@ -40,8 +44,15 @@ const SearchPage = async ({
         <h1 className="text-4xl font-bold">Search Results</h1>
         <UploadMemeButton />
       </div>
-      {searchParams.q && <h2>Looking for {searchParams.q}</h2>}
-      <ResultsList files={files} />
+      {searchParams.q && (
+        <h2 className="text-lg">
+          Searching for {"'"}
+          {searchParams.q}
+          {"'"}
+        </h2>
+      )}
+      {files.length > 0 && <ResultsList files={files} />}
+      {files.length === 0 && <NoResults />}
     </div>
   );
 };
