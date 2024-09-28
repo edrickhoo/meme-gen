@@ -2,10 +2,13 @@ import { unstable_noStore } from "next/cache";
 import React from "react";
 import FavouritesList from "./favourites-list";
 import { getFavouritedMemes } from "./loaders";
+import { redirect } from "next/navigation";
 
 const FavouritesPage = async () => {
   unstable_noStore();
-  const favourites = await getFavouritedMemes();
+  const favourites = await getFavouritedMemes().catch(() =>
+    redirect("/search?q=")
+  );
 
   return (
     <div className="container mx-auto space-y-8 py-8 px-4">

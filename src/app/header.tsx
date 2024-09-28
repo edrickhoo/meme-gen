@@ -1,5 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { ModeToggle } from "@/components/ui/toggle-theme";
 import { CircleUser, Menu, Package2, Search } from "lucide-react";
 import Link from "next/link";
@@ -48,20 +55,37 @@ const Header = async () => {
           </Button>
         </SheetTrigger>
         <SheetContent side="left">
+          <SheetHeader>
+            <SheetTitle>Menu</SheetTitle>
+          </SheetHeader>
           <nav className="grid gap-6 text-lg font-medium">
-            <Link
-              href="#"
-              className="flex items-center gap-2 text-lg font-semibold"
-            >
-              <Package2 className="h-6 w-6" />
-              <span className="sr-only">Acme Inc</span>
-            </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Dashboard
-            </Link>
+            <SheetClose asChild>
+              <Link
+                href="#"
+                className="flex items-center gap-2 text-lg font-semibold"
+              >
+                <Package2 className="h-6 w-6" />
+                <span className="sr-only">Acme Inc</span>
+              </Link>
+            </SheetClose>
+            <SheetClose asChild>
+              <Link
+                href="/search?q="
+                className="text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Browse
+              </Link>
+            </SheetClose>
+            <SheetClose asChild>
+              {session && (
+                <Link
+                  href="/favourites"
+                  className="text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  Favourites
+                </Link>
+              )}
+            </SheetClose>
           </nav>
         </SheetContent>
       </Sheet>
