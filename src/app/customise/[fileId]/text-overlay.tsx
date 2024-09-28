@@ -20,7 +20,8 @@ const TextOverlay = ({
     x: number,
     y: number,
     textBgColor: string,
-    useBgTextColor: boolean
+    useBgTextColor: boolean,
+    fontSize: number
   ) => void;
   handleRemoveOverlay: (idToRemove: number) => void;
 }) => {
@@ -29,6 +30,7 @@ const TextOverlay = ({
   const [yPos, setYPos] = useState(50);
   const [useBgTextColor, setUseBgTextColor] = useState(false);
   const [textBgColor, setTextBgColor] = useState("#aabbcc");
+  const [fontSize, setFontSize] = useState(50);
 
   useEffect(() => {
     onOverlayUpdate(
@@ -37,7 +39,8 @@ const TextOverlay = ({
       xPos,
       yPos,
       textBgColor,
-      useBgTextColor
+      useBgTextColor,
+      fontSize || 0
     );
   }, [
     onOverlayUpdate,
@@ -47,6 +50,7 @@ const TextOverlay = ({
     useBgTextColor,
     xPos,
     yPos,
+    fontSize,
   ]);
 
   return (
@@ -60,16 +64,30 @@ const TextOverlay = ({
         </Button>
       </div>
       <div className="flex items-start justify-between gap-4">
-        <div className="space-y-3 flex-1">
-          <Label htmlFor="textOverlay">Text Overlay</Label>
-          <Input
-            id="textOverlay"
-            name="textOverlay"
-            value={textOverlay}
-            onChange={(e) => {
-              setTextOverlay(e.target.value);
-            }}
-          />
+        <div>
+          <div className="space-y-3 flex-1">
+            <Label htmlFor="textOverlay">Text Overlay</Label>
+            <Input
+              id="textOverlay"
+              name="textOverlay"
+              value={textOverlay}
+              onChange={(e) => {
+                setTextOverlay(e.target.value);
+              }}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="fontSize">Font Size:</Label>
+            <Input
+              id="fontSize"
+              name="fontSize"
+              type="number"
+              value={fontSize}
+              onChange={(e) => setFontSize(e.target.value)}
+              className="w-32"
+            />
+          </div>
         </div>
         <div className="space-y-2">
           <div className="flex items-center space-x-2">
@@ -77,14 +95,6 @@ const TextOverlay = ({
               checked={useBgTextColor}
               onCheckedChange={(e) => {
                 setUseBgTextColor(e as boolean);
-                onOverlayUpdate(
-                  overlay.id,
-                  textOverlay,
-                  xPos,
-                  yPos,
-                  textBgColor,
-                  e as boolean
-                );
               }}
               id="textBgColor"
             />

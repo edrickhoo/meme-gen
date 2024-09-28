@@ -40,7 +40,7 @@ const CustomisePanel = ({
   const transformations = [];
 
   if (blur) {
-    transformations.push({ raw: `bl-10` });
+    transformations.push({ raw: `bl-5` });
   }
 
   if (sharpen) {
@@ -78,7 +78,7 @@ const CustomisePanel = ({
         y: number,
         textBgColor: string,
         useBgTextColor: boolean,
-        fontSize
+        fontSize: number
       ) => {
         if (!text) {
           return handleOverlayChange(id, "");
@@ -89,7 +89,7 @@ const CustomisePanel = ({
         if (useBgTextColor) {
           conditionalTransformations += `bg-${textBgColor.slice(1)},`;
         }
-        const transformText = `l-text,i-${text},pa-10,fs-50,lx-bw_mul_${xDecimal.toFixed(
+        const transformText = `l-text,i-${text},pa-10,fs-${fontSize},lx-bw_mul_${xDecimal.toFixed(
           1
         )},ly-bw_mul_${yDecimal.toFixed(1)},${conditionalTransformations}l-end`;
         handleOverlayChange(id, transformText);
