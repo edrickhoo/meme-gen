@@ -106,7 +106,7 @@ const CustomisePanel = ({
   };
 
   return (
-    <div className="grid grid-cols-2 gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
       <form className="space-y-4">
         <div>
           <Button

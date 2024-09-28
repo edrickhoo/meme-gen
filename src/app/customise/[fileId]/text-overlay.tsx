@@ -63,7 +63,7 @@ const TextOverlay = ({
           Remove
         </Button>
       </div>
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <div className="space-y-3 flex-1">
             <Label htmlFor="textOverlay">Text Overlay</Label>
