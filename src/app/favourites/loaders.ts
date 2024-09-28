@@ -2,7 +2,6 @@ import { assertAuthenicated } from "@/lib/auth-utils";
 import { db } from "../db/db";
 import { eq } from "drizzle-orm";
 import { favourites } from "../db/schema";
-import { imagekit } from "@/lib/image-kit";
 
 export const getFavouritedMemes = async () => {
   const userId = await assertAuthenicated();

@@ -9,7 +9,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { Download, Heart } from "lucide-react";
+import { Download } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,

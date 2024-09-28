@@ -84,7 +84,7 @@ const TextOverlay = ({
               name="fontSize"
               type="number"
               value={fontSize}
-              onChange={(e) => setFontSize(e.target.value)}
+              onChange={(e) => setFontSize(Number(e.target.value))}
               className="w-32"
             />
           </div>
