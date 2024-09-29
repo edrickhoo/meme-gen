@@ -6,7 +6,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Home Page", () => {
   test("Expect Home Page to redirect to /search?q=", async ({ page }) => {
-    await page.goto("http://localhost:3000/");
+    await page.goto("/");
     await expect(page).toHaveURL(/.*search\?q=/);
   });
 });
@@ -14,7 +14,7 @@ test.describe("Search Page", () => {
   test("Searching 'sdjkfnkljasndfkljasnd' would result in no results ", async ({
     page,
   }) => {
-    await page.goto("http://localhost:3000/");
+    await page.goto("/");
 
     const searchInput = page.getByPlaceholder(/search memes/i);
     await searchInput.fill("sdjkfnkljasndfkljasnd");
@@ -30,12 +30,14 @@ test.describe("Search Page", () => {
   });
 
   test("Customising a meme and downloading it", async ({ page }) => {
-    await page.goto("http://localhost:3000/search/?q=");
+    await page.goto("/search/?q=");
 
     await page
       .getByText(/Customise/)
       .nth(0)
       .click();
+
+    await page.waitForTimeout(500);
 
     await expect(page).toHaveURL(/customise/i);
 
