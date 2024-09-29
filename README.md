@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Meme Gen
 
-## Getting Started
+#### Home Page
+![Screenshot](./screenshot/meme-gen-thumbnail.png)
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+#### Customise Page
+
+![Screenshot-Customise Page](./screenshot/meme-gen-customise-thumbnail.png)
+
+
+## Deployed Version
+
+* [Link]( https://meme-gen-edric.vercel.app/)
+
+## Setup
+
+* To install dependencies open terminal cd into the root folder
+ ```
+ npm install
+ ```
+* Setup env variables in a .env file
 ```
+# Image kit
+NEXT_PUBLIC_PUBLIC_KEY=""
+NEXT_PUBLIC_URL_ENDPOINT=""
+PRIVATE_KEY=""
+# Database url
+DRIZZLE_DATABASE_URL=""
+# Google Oauth
+AUTH_SECRET=""
+AUTH_GOOGLE_ID=""
+AUTH_GOOGLE_SECRET=""
+```
+ * Run Application
+ ```
+ npm run dev
+ ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Outline
+This project aim is create a web app to generate memes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Stack
+  NextJS - TailwindCSS - Shadcn - Imagekit - Neon - Auth.js - DrizzleORM
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Features
+  - Users are able to OAuth login with google
+  - Users are able search for memes
+  - Users are able upload memes
+  - Users are able customise memes (Add text overlays, modify each text background ,and add blur/sharpen/greyscale effects)
+  - Users are able favourite memes and view these memes
 
-## Learn More
+## Interesting
+  - Debounce call backs were used to prevent the spam of image updates.
+  - [Use Debounce library](https://www.npmjs.com/package/use-debounce)
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Stay in touch
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+*  [Portfolio]( https://edric-khoo.vercel.app/)
+*  [Linkedin]( https://www.linkedin.com/in/edric-khoo-98881b173/)
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
