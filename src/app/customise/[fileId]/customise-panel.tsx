@@ -190,6 +190,7 @@ const CustomisePanel = ({
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
+                  data-testid="download"
                   onClick={async () => {
                     const image: HTMLImageElement | null =
                       document.querySelector(".meme > img");

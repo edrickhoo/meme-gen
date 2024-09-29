@@ -30,7 +30,17 @@ const FavouriteButton = ({
       <Tooltip>
         <TooltipTrigger asChild>
           <form
-            action={async () => {
+            // action={async () => {
+            //   toggleFavouriteMemeAction(
+            //     fileId,
+            //     filePath,
+            //     `/customise/${fileId}`,
+            //     fileWidth,
+            //     fileHeight
+            //   );
+            // }}
+            onSubmit={async (e) => {
+              e.preventDefault();
               toggleFavouriteMemeAction(
                 fileId,
                 filePath,
