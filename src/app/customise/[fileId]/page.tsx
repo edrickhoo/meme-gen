@@ -1,17 +1,16 @@
-import { unstable_noStore } from "next/cache";
-import { imagekit } from "@/lib/image-kit";
-import CustomisePanel from "./customise-panel";
-import { getFavouriteMeme } from "./loaders";
-import { auth } from "@/auth";
+import { unstable_noStore } from "next/cache"
+import { imagekit } from "@/lib/image-kit"
+import CustomisePanel from "./customise-panel"
+import { getFavouriteMeme } from "./loaders"
+import { auth } from "@/auth"
 
 const CustomisePage = async ({ params }: { params: { fileId: string } }) => {
-  // For incase it uses native fetch func under the hook for imagekit not to cache
-  unstable_noStore();
+  unstable_noStore()
 
-  const session = await auth();
+  const session = await auth()
 
-  const file = await imagekit.getFileDetails(params.fileId);
-  const isFavourited = session ? await getFavouriteMeme(params.fileId) : false;
+  const file = await imagekit.getFileDetails(params.fileId)
+  const isFavourited = session ? await getFavouriteMeme(params.fileId) : false
 
   return (
     <div className="container mx-auto space-y-8 py-8 px-4">
@@ -31,7 +30,7 @@ const CustomisePage = async ({ params }: { params: { fileId: string } }) => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CustomisePage;
+export default CustomisePage
